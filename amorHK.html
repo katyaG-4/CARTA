@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Para mi lobito🌙🐺</title>
+  <style>
+    body {
+      font-family: 'Courier New', monospace;
+      background: linear-gradient(to bottom, #0d1b2a, #1b263b, #415a77);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+      position: relative;
+    }
+    .moon {
+      position: absolute;
+      top: 40px;
+      right: 40px;
+      width: 80px;
+      height: 80px;
+      background: radial-gradient(circle at center, #fdf6e3, #c0c0c0);
+      border-radius: 50%;
+      box-shadow: 0 0 30px 10px rgba(255, 255, 220, 0.5);
+    }
+    .card {
+      background: rgba(70, 70, 100, 0.95); /* más claro para ver mejor */
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 40px rgba(255, 105, 180, 0.7);
+      text-align: center;
+      max-width: 500px;
+      position: relative;
+      z-index: 2;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    h1 {
+      color: #ff69b4;
+    }
+    .message {
+      font-size: 1.2rem;
+      margin: 1rem 0;
+      min-height: 80px;
+      white-space: pre-wrap;
+      color: #fff;
+    }
+    .fecha {
+      font-size: 0.9rem;
+      color: #c0d6f0;
+      margin-bottom: 0.5rem;
+    }
+    .firma {
+      margin-top: 1rem;
+      font-size: 1rem;
+      color: #ffb6c1;
+      font-style: italic;
+      position: relative;
+      display: inline-block;
+      z-index: 2;
+    }
+    .estrella {
+      position: absolute;
+      color: #ffd700;
+      font-size: 0.8rem;
+      animation: brillo 2s infinite;
+    }
+    @keyframes brillo {
+      0% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+      50% { opacity: 1; transform: scale(1.2) rotate(180deg); }
+      100% { opacity: 0; transform: scale(0.5) rotate(360deg); }
+    }
+    button {
+      background: #ff69b4;
+      border: none;
+      padding: 0.5rem 1rem;
+      margin: 0.5rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      color: #fff;
+      font-weight: bold;
+      transition: background 0.3s;
+      z-index: 2;
+      position: relative;
+    }
+    button:hover {
+      background: #ff85c1;
+    }
+    .hearts, .background-stars {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: -1;
+    }
+    .heart, .star {
+      position: absolute;
+      color: #ff69b4;
+      animation: float 5s linear infinite;
+    }
+    .star {
+      color: #ffffff;
+      font-size: 1px;
+      animation: twinkle 3s infinite;
+    }
+    @keyframes float {
+      from { transform: translateY(100vh) scale(1); opacity: 1; }
+      to { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="moon"></div>
+  <div class="card">
+    <div class="fecha">27-08-2025</div>
+    <h1>Para mi lobito🌙🐺</h1>
+    <div class="message" id="message"></div>
+    <div class="firma">— Con amor, Kat 💌🦒
+      <span class="estrella" style="top:-10px; left:-20px;">✨</span>
+      <span class="estrella" style="top:-10px; right:-20px;">✨</span>
+      <span class="estrella" style="bottom:-10px; left:0;">✨</span>
+      <span class="estrella" style="bottom:-10px; right:0;">✨</span>
+    </div>
+    <button onclick="prevMessage()">⬅️ Anterior</button>
+    <button onclick="nextMessage()">Siguiente ➡️</button>
+    <button onclick="randomMessage()">🎲 Aleatorio</button>
+  </div>
+  <div class="hearts" id="hearts"></div>
+  <div class="background-stars" id="background-stars"></div>
+
+  <script>
+    const CONFIG = {
+      tuNombre: "Katya",
+      suNombre: "Heyder",
+      mensajes: [
+       "Mi amor, feliz vuelta al sol", 
+      "Gracias  por enseñarme a ver el mundo con otra lógica y mucho amor",
+      "Con todas las variables de la vida, quiero que seas mi constante",
+      "Eres mi Google, en ti encuentro todo lo que deseo",
+      "De ahora en adelante, mi código dirá \"Hola <Heyder>\" porque eres mi mundo",
+      "Te amo mi lobo wild, deseo que seas muy feliz hoy y cada día de tu vida; siempre estaré para ayudarte a subir cada escalón",
+      "Soy muy afortunada de tenerte en mi vida, mi gran maestro Guru",
+      "Gracias por ser quien eres y por enseñarme a ver la vida con tus bellos ojos",
+      "pdt: Eres el fenotipo más hermoso que una cadena de nucleótidos pudo codificar",
+      "Te amo infinitamente"
+      ],
+      tagline: "#AmorEnCódigo",
+    };
+
+    let index = 0;
+    const msgDiv = document.getElementById("message");
+    let typingInterval;
+
+    function typeWriter(text, i = 0) {
+      msgDiv.textContent = text.substring(0, i);
+      if (i < text.length) {
+        typingInterval = setTimeout(() => typeWriter(text, i + 1), 50);
+      }
+    }
+
+    function showMessage(i) {
+      clearTimeout(typingInterval);
+      msgDiv.textContent = "";
+      typeWriter(CONFIG.mensajes[i]);
+    }
+
+    function nextMessage() {
+      index = (index + 1) % CONFIG.mensajes.length;
+      showMessage(index);
+    }
+
+    function prevMessage() {
+      index = (index - 1 + CONFIG.mensajes.length) % CONFIG.mensajes.length;
+      showMessage(index);
+    }
+
+    function randomMessage() {
+      index = Math.floor(Math.random() * CONFIG.mensajes.length);
+      showMessage(index);
+    }
+
+    // corazones flotantes
+    const heartsContainer = document.getElementById("hearts");
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.textContent = "❤";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = Math.random() * 20 + 10 + "px";
+      heart.style.animationDuration = (Math.random() * 3 + 2) + "s";
+      heartsContainer.appendChild(heart);
+      setTimeout(() => heart.remove(), 5000);
+    }
+    setInterval(createHeart, 500);
+
+    // estrellas de fondo
+    const starsContainer = document.getElementById("background-stars");
+    for (let i = 0; i < 100; i++) {
+      const star = document.createElement("div");
+      star.classList.add("star");
+      star.style.top = Math.random() * 100 + "%";
+      star.style.left = Math.random() * 100 + "%";
+      star.style.fontSize = Math.random() * 2 + 1 + "px";
+      starsContainer.appendChild(star);
+    }
+
+    // inicial
+    showMessage(index);
+  </script>
+</body>
+</html>
